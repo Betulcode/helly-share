@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,6 +8,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import {FirebaseAuthContext} from "../context/AuthContext"
+import firebase from "../firebase/firebase.utils"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NavBar() {
+
+  const { currentUser } = useContext(FirebaseAuthContext);
+  console.log("currentUser",currentUser)
   const classes = useStyles();
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -38,6 +43,10 @@ export default function NavBar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleSignOut=()=>{
+    firebase.firebaseAuth.signOut();
+  }
 
   return (
     <div className={classes.root}>
@@ -59,6 +68,7 @@ export default function NavBar() {
                 onClick={handleMenu}
                 color="inherit"
               >
+                {currentUser?.displayName}
                 <AccountCircle />
               </IconButton>
               <Menu
@@ -78,6 +88,7 @@ export default function NavBar() {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
             </div>
           )}

@@ -10,7 +10,7 @@ const RouterApp = () => {
         <Router>
             <Navbar/>
             <Route path="/register" component={SignUp}/>
-            <Route path="/SignIn" component={SignIn}/>
+            <Route path="/SignIn"  component={SignIn}/>
         </Router>
     )
 }
